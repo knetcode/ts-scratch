@@ -13,35 +13,35 @@ const testbust: TestBust[] = [
   { bust: 81, waist: 72, expected: "small" },
   { bust: 82.2, waist: 69.5, expected: "small" },
   { bust: 83, waist: 80, expected: "small" },
-  // { bust: 87, waist: 72.3, expected: "small" }, // This feels like it should be "medium"
+  { bust: 87, waist: 72.3, expected: "medium" },
   { bust: 87, waist: 75, expected: "medium" },
   { bust: 87, waist: 77.5, expected: "medium" },
-  // { bust: 87.5, waist: 69, expected: "full" }, // This feels like it should be "medium"
-  { bust: 88, waist: 68, expected: "medium" },
+  { bust: 87.5, waist: 69, expected: "full" },
+  { bust: 88, waist: 68, expected: "full" },
   { bust: 88, waist: 72, expected: "medium" },
-  // { bust: 88, waist: 77, expected: "small" }, // This feels like it should be "medium"
+  { bust: 88, waist: 77, expected: "medium" },
   { bust: 89, waist: 81, expected: "medium" },
   { bust: 89.1, waist: 74.3, expected: "medium" },
   { bust: 90, waist: 81, expected: "medium" },
-  // { bust: 90.1, waist: 78.74, expected: "full" }, // This feels like it should be "medium"
-  // { bust: 90.5, waist: 81.7, expected: "small" }, // This feels like it should be "medium"
+  { bust: 90.1, waist: 78.74, expected: "medium" },
+  { bust: 90.5, waist: 81.7, expected: "medium" },
   { bust: 91, waist: 76.75, expected: "medium" },
-  // { bust: 92.2, waist: 79.5, expected: "small" }, // This feels like it should be "medium"
+  { bust: 92.2, waist: 79.5, expected: "medium" },
   { bust: 92.5, waist: 76, expected: "medium" },
   { bust: 93, waist: 75, expected: "medium" },
   { bust: 93.2, waist: 83.3, expected: "medium" },
-  // { bust: 93.5, waist: 79, expected: "full" }, // This feels like it should be "medium"
-  // { bust: 93.98, waist: 81.28, expected: "very full" }, // This feels like it should be "full"
+  { bust: 93.5, waist: 79, expected: "medium" },
+  { bust: 93.98, waist: 81.28, expected: "medium" },
   { bust: 94, waist: 83, expected: "medium" },
-  // { bust: 96, waist: 99.5, expected: "medium" }, // This has a negavtive ratio, not sure what to do with it
+  { bust: 96, waist: 99.5, expected: "full" },
   { bust: 97, waist: 74, expected: "full" },
   { bust: 97, waist: 82.5, expected: "medium" },
-  // { bust: 98, waist: 83, expected: "small" }, // This feels like it should be "medium"
+  { bust: 98, waist: 83, expected: "medium" },
   { bust: 98, waist: 86, expected: "medium" },
   { bust: 98.5, waist: 86.6, expected: "medium" },
-  // { bust: 101, waist: 90, expected: "full" }, // This feels like it should be "very full"
+  { bust: 101, waist: 90, expected: "medium" },
   { bust: 102, waist: 94, expected: "very full" },
-  // { bust: 108.2, waist: 96.2, expected: "medium" }, // This feels like it should be "very full"
+  { bust: 108.2, waist: 96.2, expected: "medium" },
 ];
 
 export default function BustWaistPage() {
@@ -61,9 +61,13 @@ export default function BustWaistPage() {
   function calc(bust: number, waist: number) {
     const ratio = bust / waist;
 
+    if (bust >= 80 && ratio < 1) return "full";
+    if (ratio < 1) return "medium";
+    if (bust >= 100 && ratio >= 1.12) return "medium";
     if (bust >= 100 && ratio >= 1.08) return "very full";
     if (bust >= 90 && ratio >= 1.3) return "full";
     if (bust >= 90 && ratio >= 1.15) return "medium";
+    if (bust >= 85 && ratio >= 1.25) return "full";
     if (bust >= 85 && ratio >= 1) return "medium";
     if (bust >= 70 && ratio >= 1) return "small";
 
