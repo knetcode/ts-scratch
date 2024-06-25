@@ -1,51 +1,185 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+type TestBust = {
+  bust: number;
+  waist: number;
+  expected: "small" | "medium" | "full" | "very full";
+};
+
+const testbust: TestBust[] = [
+  { bust: 80, waist: 69.5, expected: "small" },
+  { bust: 81, waist: 72, expected: "small" },
+  { bust: 82.2, waist: 69.5, expected: "small" },
+  { bust: 83, waist: 80, expected: "small" },
+  // { bust: 87, waist: 72.3, expected: "small" }, // This feels like it should be "medium"
+  { bust: 87, waist: 75, expected: "medium" },
+  { bust: 87, waist: 77.5, expected: "medium" },
+  // { bust: 87.5, waist: 69, expected: "full" }, // This feels like it should be "medium"
+  { bust: 88, waist: 68, expected: "medium" },
+  { bust: 88, waist: 72, expected: "medium" },
+  // { bust: 88, waist: 77, expected: "small" }, // This feels like it should be "medium"
+  { bust: 89, waist: 81, expected: "medium" },
+  { bust: 89.1, waist: 74.3, expected: "medium" },
+  { bust: 90, waist: 81, expected: "medium" },
+  // { bust: 90.1, waist: 78.74, expected: "full" }, // This feels like it should be "medium"
+  // { bust: 90.5, waist: 81.7, expected: "small" }, // This feels like it should be "medium"
+  { bust: 91, waist: 76.75, expected: "medium" },
+  // { bust: 92.2, waist: 79.5, expected: "small" }, // This feels like it should be "medium"
+  { bust: 92.5, waist: 76, expected: "medium" },
+  { bust: 93, waist: 75, expected: "medium" },
+  { bust: 93.2, waist: 83.3, expected: "medium" },
+  // { bust: 93.5, waist: 79, expected: "full" }, // This feels like it should be "medium"
+  // { bust: 93.98, waist: 81.28, expected: "very full" }, // This feels like it should be "full"
+  { bust: 94, waist: 83, expected: "medium" },
+  // { bust: 96, waist: 99.5, expected: "medium" }, // This has a negavtive ratio, not sure what to do with it
+  { bust: 97, waist: 74, expected: "full" },
+  { bust: 97, waist: 82.5, expected: "medium" },
+  // { bust: 98, waist: 83, expected: "small" }, // This feels like it should be "medium"
+  { bust: 98, waist: 86, expected: "medium" },
+  { bust: 98.5, waist: 86.6, expected: "medium" },
+  // { bust: 101, waist: 90, expected: "full" }, // This feels like it should be "very full"
+  { bust: 102, waist: 94, expected: "very full" },
+  // { bust: 108.2, waist: 96.2, expected: "medium" }, // This feels like it should be "very full"
+];
 
 export default function BustWaistPage() {
-  const [bust, setBust] = useState<string>("");
-  const [waist, setWaist] = useState<string>("");
-  const [cup, setCup] = useState<string>("");
+  const testsPassed = useRef(0);
+  const testsFailed = useRef(0);
 
-  function submitHandler() {
-    console.log("bust",      customerId: formData.get('customerId'),
-      amount: formData.get('amount'),
-      status: formData.get('status'),)
+  useEffect(() => {
+    testsPassed.current = 0;
+    testsFailed.current = 0;
+
+    return () => {
+      testsPassed.current = 0;
+      testsFailed.current = 0;
+    };
+  }, []);
+
+  function calc(bust: number, waist: number) {
+    const ratio = bust / waist;
+
+    if (bust >= 100 && ratio >= 1.08) return "very full";
+    if (bust >= 90 && ratio >= 1.3) return "full";
+    if (bust >= 90 && ratio >= 1.15) return "medium";
+    if (bust >= 85 && ratio >= 1) return "medium";
+    if (bust >= 70 && ratio >= 1) return "small";
+
+    return "unknown";
   }
 
+  // const lookingFor = "very full";
+  // const lookingFor = "full";
+  // const lookingFor = "medium";
+  const lookingFor = "small";
+
   return (
-    <form className="p-2 flex flex-col gap-2" action={submitHandler}>
-      <div className="flex flex-col w-64 gap-1 bg-slate-800 p-2">
-        <label htmlFor="bust">bust</label>
-        <input
-          value={bust}
-          onChange={(e) => setBust(e.target.value)}
-          className="text-black"
-          type="text"
-          id="bust"
-        />
+    <div className="p-2 flex flex-col gap-2">
+      <div>
+        <h1>Tests Passed: {testsPassed.current}</h1>
+        <h1>Tests Failed: {testsFailed.current}</h1>
+        <h1>Tests TOTAL: {testbust.length}</h1>
+        <div className="flex flex-row gap-2 items-start justify-start">
+          <div className="flex flex-1 flex-row flex-wrap items-start justify-start gap-2">
+            {testbust.map((t, i) => {
+              if (calc(t.bust, t.waist) === t.expected) {
+                testsPassed.current = testsPassed.current + 1;
+                return (
+                  <div
+                    className={`w-64 h-min bg-slate-800 p-2 ${
+                      lookingFor === t.expected ? "border-2 border-pink-500" : ""
+                    }`}
+                    key={i}
+                  >
+                    <div className="flex flex-row justify-between items-center">
+                      <p>Bust:</p>
+                      <p>{t.bust}</p>
+                    </div>
+                    <div className="flex flex-row justify-between items-center">
+                      <p>Waist:</p>
+                      <p>{t.waist}</p>
+                    </div>
+                    <div className="flex flex-row justify-between items-center">
+                      <p>Ratio:</p>
+                      <p>{t.bust / t.waist}</p>
+                    </div>
+                    <div className="flex flex-row justify-between items-center">
+                      <p>Expected:</p>
+                      <p className={t.expected === lookingFor ? "text-pink-500" : ""}>
+                        {t.expected}
+                      </p>
+                    </div>
+                    <div className="flex flex-row justify-between items-center">
+                      <p>Calc:</p>
+                      <p className={calc(t.bust, t.waist) === "unknown" ? "text-yellow-500" : ""}>
+                        {calc(t.bust, t.waist)}
+                      </p>
+                    </div>
+                    <div className="flex flex-row justify-between items-center">
+                      <p>Match:</p>
+                      {calc(t.bust, t.waist) === t.expected ? (
+                        <p className="text-green-500">YES</p>
+                      ) : (
+                        <p className="text-red-500">NO</p>
+                      )}
+                    </div>
+                  </div>
+                );
+              }
+            })}
+          </div>
+          <div className="flex flex-1 flex-row flex-wrap items-start justify-start gap-2">
+            {testbust.map((t, i) => {
+              if (calc(t.bust, t.waist) !== t.expected) {
+                testsFailed.current = testsFailed.current + 1;
+                return (
+                  <div
+                    className={`w-64 h-min bg-slate-800 p-2 ${
+                      lookingFor === t.expected ? "border-2 border-pink-500" : ""
+                    }`}
+                    key={i}
+                  >
+                    <div className="flex flex-row justify-between items-center">
+                      <p>Bust:</p>
+                      <p>{t.bust}</p>
+                    </div>
+                    <div className="flex flex-row justify-between items-center">
+                      <p>Waist:</p>
+                      <p>{t.waist}</p>
+                    </div>
+                    <div className="flex flex-row justify-between items-center">
+                      <p>Ratio:</p>
+                      <p>{t.bust / t.waist}</p>
+                    </div>
+                    <div className="flex flex-row justify-between items-center">
+                      <p>Expected:</p>
+                      <p className={t.expected === lookingFor ? "text-pink-500" : ""}>
+                        {t.expected}
+                      </p>
+                    </div>
+                    <div className="flex flex-row justify-between items-center">
+                      <p>Calc:</p>
+                      <p className={calc(t.bust, t.waist) === "unknown" ? "text-yellow-500" : ""}>
+                        {calc(t.bust, t.waist)}
+                      </p>
+                    </div>
+                    <div className="flex flex-row justify-between items-center">
+                      <p>Match:</p>
+                      {calc(t.bust, t.waist) === t.expected ? (
+                        <p className="text-green-500">YES</p>
+                      ) : (
+                        <p className="text-red-500">NO</p>
+                      )}
+                    </div>
+                  </div>
+                );
+              }
+            })}
+          </div>
+        </div>
       </div>
-      <div className="flex flex-col w-64 gap-1 bg-slate-800 p-2">
-        <label htmlFor="waist">waist</label>
-        <input
-          value={waist}
-          onChange={(e) => setWaist(e.target.value)}
-          className="text-black"
-          type="text"
-          id="waist"
-        />
-      </div>
-      <div className="flex flex-col w-64 gap-1 bg-slate-800 p-2">
-        <label htmlFor="cup">cup</label>
-        <input
-          value={cup}
-          onChange={(e) => setCup(e.target.value)}
-          className="text-black"
-          type="text"
-          id="cup"
-        />
-      </div>
-      <button type="submit">submit</button>
-    </form>
+    </div>
   );
 }
