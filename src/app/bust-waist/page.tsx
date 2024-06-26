@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 type TestBust = {
   bust: number;
@@ -8,7 +8,7 @@ type TestBust = {
   expected: "small" | "medium" | "full" | "very full";
 };
 
-const testbust: TestBust[] = [
+const testData: TestBust[] = [
   { bust: 80, waist: 69.5, expected: "small" },
   { bust: 81, waist: 72, expected: "small" },
   { bust: 82.2, waist: 69.5, expected: "small" },
@@ -84,10 +84,10 @@ export default function BustWaistPage() {
       <div>
         <h1>Tests Passed: {testsPassed.current}</h1>
         <h1>Tests Failed: {testsFailed.current}</h1>
-        <h1>Tests TOTAL: {testbust.length}</h1>
+        <h1>Tests TOTAL: {testData.length}</h1>
         <div className="flex flex-row gap-2 items-start justify-start">
           <div className="flex flex-1 flex-row flex-wrap items-start justify-start gap-2">
-            {testbust.map((t, i) => {
+            {testData.map((t, i) => {
               if (calc(t.bust, t.waist) === t.expected) {
                 testsPassed.current = testsPassed.current + 1;
                 return (
@@ -111,9 +111,7 @@ export default function BustWaistPage() {
                     </div>
                     <div className="flex flex-row justify-between items-center">
                       <p>Expected:</p>
-                      <p className={t.expected === lookingFor ? "text-pink-500" : ""}>
-                        {t.expected}
-                      </p>
+                      <p className={t.expected === lookingFor ? "text-pink-500" : ""}>{t.expected}</p>
                     </div>
                     <div className="flex flex-row justify-between items-center">
                       <p>Calc:</p>
@@ -135,7 +133,7 @@ export default function BustWaistPage() {
             })}
           </div>
           <div className="flex flex-1 flex-row flex-wrap items-start justify-start gap-2">
-            {testbust.map((t, i) => {
+            {testData.map((t, i) => {
               if (calc(t.bust, t.waist) !== t.expected) {
                 testsFailed.current = testsFailed.current + 1;
                 return (
@@ -159,9 +157,7 @@ export default function BustWaistPage() {
                     </div>
                     <div className="flex flex-row justify-between items-center">
                       <p>Expected:</p>
-                      <p className={t.expected === lookingFor ? "text-pink-500" : ""}>
-                        {t.expected}
-                      </p>
+                      <p className={t.expected === lookingFor ? "text-pink-500" : ""}>{t.expected}</p>
                     </div>
                     <div className="flex flex-row justify-between items-center">
                       <p>Calc:</p>
