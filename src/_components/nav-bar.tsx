@@ -4,6 +4,8 @@ export function NavBar() {
   const links = [
     { label: "Bust and waist ratio", url: "bust-waist" },
     { label: "Long leg, short leg", url: "leg" },
+    { label: "Tummy", url: "tummy" },
+    { label: "Bum", url: "bum" },
   ];
 
   return (
