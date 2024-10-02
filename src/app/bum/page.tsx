@@ -84,26 +84,39 @@ console.log("||||| NEW DATA |||||");
 const testData: TestResult[] = testDataSorted;
 
 function calc(t: TestResult): BumResult {
-  if (t.lowHip < 100) {
-    if (t.hipRatio <= 0.038) {
-      return "flat";
+  if (t.lowHip >= 100) {
+    if (t.hipRatio >= 0.08) {
+      return "rounded";
     }
-    if (t.hipRatio < 0.08) {
+    if (t.hipRatio >= 0.03) {
       return "broad";
     }
-  } else {
-    if (t.hipRatio <= 0.02) {
-      return "flat";
+    return "flat";
+  }
+  if (t.lowHip >= 90) {
+    if (t.hipRatio > 0.05) {
+      return "rounded";
     }
-    if (t.hipRatio <= 0.08) {
+    if (t.hipRatio == 0.05) {
       return "broad";
     }
+    return "flat";
+  }
+  if (t.lowHip >= 80) {
+    if (t.hipRatio >= 0.07) {
+      return "rounded";
+    }
+    if (t.hipRatio >= 0.06) {
+      return "broad";
+    }
+    return "flat";
   }
 
   return "rounded";
 }
 
-const lookingFor = "flat";
+const lookingFor = "unknown";
+// const lookingFor = "flat";
 // const lookingFor = "broad";
 // const lookingFor = "rounded";
 

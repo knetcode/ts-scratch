@@ -41,6 +41,8 @@ const ogData: OgResult[] = [
   { waist: 78.74, lowHip: 91.4, expected: "Rounded" },
 ];
 
+new Error("asd", { cause: "zxc" });
+
 const ogDataMapped = ogData.map((t) => {
   return {
     waist: t.waist,
@@ -63,15 +65,31 @@ console.log("||||| NEW DATA |||||");
 const testData: TestResult[] = testDataSorted;
 
 function calc(t: TestResult): TummyResult {
-  if (t.waistHipRatio >= 0.8) {
-    return "Rounded";
+  if (t.waist >= 100) {
+    if (t.waistHipRatio >= 0.5) {
+      return "Rounded";
+    }
+    return "Flat";
+  }
+  if (t.waist >= 80) {
+    if (t.waistHipRatio >= 0.77) {
+      return "Rounded";
+    }
+    return "Flat";
+  }
+  if (t.waist >= 60) {
+    if (t.waistHipRatio >= 0.75) {
+      return "Rounded";
+    }
+    return "Flat";
   }
 
   return "Flat";
 }
 
 // const lookingFor = "Rounded";
-const lookingFor = "Flat";
+// const lookingFor = "Flat";
+const lookingFor = "unknown";
 
 function DataCard({ t }: { t: TestResult }) {
   return (
