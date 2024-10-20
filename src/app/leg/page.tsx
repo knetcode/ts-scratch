@@ -114,10 +114,6 @@ const testDataSorted = ogDataMapped.sort((a, b) => {
   return b.waist - a.waist;
 });
 
-console.log("||||| NEW DATA |||||");
-console.log(testDataSorted);
-console.log("||||| NEW DATA |||||");
-
 const testData: TestResult[] = testDataSorted;
 
 function calc(t: TestResult): LegResult {

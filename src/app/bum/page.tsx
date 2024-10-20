@@ -77,10 +77,6 @@ const testDataSorted = ogDataMapped.sort((a, b) => {
   return b.lowHip - a.lowHip;
 });
 
-console.log("||||| NEW DATA |||||");
-console.log(testDataSorted);
-console.log("||||| NEW DATA |||||");
-
 const testData: TestResult[] = testDataSorted;
 
 function calc(t: TestResult): BumResult {
