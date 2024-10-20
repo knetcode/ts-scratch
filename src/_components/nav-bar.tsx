@@ -6,6 +6,7 @@ export function NavBar() {
     { label: "Long leg, short leg", url: "leg" },
     { label: "Tummy", url: "tummy" },
     { label: "Bum", url: "bum" },
+    { label: "DNA", url: "dna" },
   ];
 
   return (
