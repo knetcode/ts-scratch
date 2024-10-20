@@ -63,8 +63,8 @@ export default function Dna() {
   const [ranges, setRange] = useConstrainedRanges([33, 33, 34]);
 
   return (
-    <div>
-      <div className="flex flex-col w-96">
+    <div className="p-8">
+      <div className="flex flex-col w-96 ">
         {ranges.map((range, index) => (
           <div key={index}>
             <input
